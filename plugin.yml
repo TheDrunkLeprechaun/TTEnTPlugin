@@ -14,14 +14,14 @@ commands:
 		permission-message: You cannot create a public game.
 	acceptInvite:
 		description: Accepts an invite and join the game
-		usage: /acceptInvite <name of sender>
+		usage: /acceptInvite <name of game>
 	joinGame:
 		description: Joins the game
 		usage: /joinGame <game name>
 		
 permissions:
 	privateGame.*:
-		description: Gives access to commands related to creating private games(i.e. games that can only be joined by invite)
+		description: Gives access to commands related to creating private games(i.e. games that can only be joined by invite).
 		children:
 			privateGame.create: op
 			privateGame.start: op
@@ -30,7 +30,7 @@ permissions:
 			privateGame.kickPlayer: op
 		default: op
 	publicGame.*:
-		description: Gives access to commands related to creating private games(i.e. games that can only be joined by invite)
+		description: Gives access to commands related to creating private games(i.e. games that can be joined by anyone).
 		children:
 			publicGame.create: op
 			publicGame.start: op
@@ -38,3 +38,6 @@ permissions:
 			publicGame.invitePlayer: op
 			publicGame.kickPlayer: op		
 		default: op
+	joinGame:
+		description: Gives access to the join game and accept invite commands.
+		default: true

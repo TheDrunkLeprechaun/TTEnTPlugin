@@ -27,22 +27,23 @@ public class TTEnTGame {
 	public TTEnTGame() {
 		spawn = new Location(TTEnTMain.worlds.get(0), numGames * 500, 5, numGames * 500);
 		deathSpawn = new Location(TTEnTMain.worlds.get(1), numGames * 500, 5, numGames * 500);
+		numGames++;
 		players = new ArrayList<IngamePlayer>();
 	}
 	public void start() {
 		for(IngamePlayer player: players) {
 			//Get the player represented
-			Player p = Bukkit.getServer().getPlayer(player.rep);
+			Player p = player.getRep();
 			if(!p.isOnline()) {
-				Bukkit.getServer().broadcastMessage("Player " + player.rep + " is not online, and is being excluded from the game.");
+				Bukkit.getServer().broadcastMessage("Player " + p.getName() + " is not online, and is being excluded from the game.");
 				players.remove(player);
 			}
 			else {
 				//Save the player's original location
-				originalLocations.put(player.rep, p.getLocation());
+				originalLocations.put(player.getRep().getName(), p.getLocation());
 				//Set the players inventory to the starting inventory
 				PlayerInventory pInv = p.getInventory();
-				originalInventories.put(player.rep, pInv);
+				originalInventories.put(player.getRep().getName(), pInv);
 				pInv.clear();
 				pInv.setArmorContents(new ItemStack[]{new ItemStack(Material.IRON_HELMET), new ItemStack(Material.IRON_CHESTPLATE),
 						new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.IRON_BOOTS)});
@@ -52,21 +53,20 @@ public class TTEnTGame {
 				pInv.addItem(new ItemStack(Material.BREAD, 16));
 				pInv.addItem(new ItemStack(Material.GRILLED_PORK, 8));
 				pInv.addItem(new ItemStack(Material.ENDER_PEARL, 4));
-				pInv.addItem(new ItemStack(Material.SKULL_ITEM, 1));
 
 				p.setGameMode(GameMode.ADVENTURE);
 				p.teleport(spawn);
 			}
 		}
-		//TODO Spawn village and villagers
+		//Spawn village and villagers
 		new TTEnTMain().generateVillage(spawn, players);
 	}
 	public void end() {
 		for(IngamePlayer player: players) {
 			//Get the player represented
-			Player p = Bukkit.getServer().getPlayer(player.rep);
+			Player p = player.getRep();
 			p.setGameMode(Bukkit.getDefaultGameMode());
-			p.teleport(originalLocations.get(player.rep));
+			p.teleport(originalLocations.get(player.getRep().getPlayer().getName()));
 			//Re-load player inventory
 		}
 	}

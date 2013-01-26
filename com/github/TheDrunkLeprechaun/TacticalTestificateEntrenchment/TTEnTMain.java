@@ -1,10 +1,14 @@
 package com.github.TheDrunkLeprechaun.TacticalTestificateEntrenchment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 
 import org.bukkit.Location;
@@ -26,36 +30,53 @@ public final class TTEnTMain extends org.bukkit.plugin.java.JavaPlugin {
 
 	public static List<TTEnTGame> activeGames = new ArrayList<TTEnTGame>();
 
-	public TTEnTMain() {
-		onEnable();
-	}
+	public volatile boolean logic = true;
+	
+	public static String createGameCmd, startGameCmd, endGameCmd, invitePlayerCmd, kickPlayerCmd;
 
 	@Override
 	public void onEnable() {
-		worlds = getServer().getWorlds();
+		Properties props = new Properties();
 
+		try {
+			props.load(new FileInputStream(new File("TTEnT.properties")));
+			props.getProperty("CREATE_GAME_CMD");
+			props.getProperty("START_GAME_CMD");
+			props.getProperty("END_GAME_CMD");
+			props.getProperty("INVITE_PLAYER_CMD");
+			props.getProperty("KICK_PLAYER_CMD");
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		worlds = getServer().getWorlds();
+		
 		getServer().getPluginManager().registerEvents(new TTEnTListener(), this);
 
 		getCommand("privateGame").setExecutor(new TTEnTCommandExcecutor());
 		getCommand("publicGame").setExecutor(new TTEnTCommandExcecutor());
 		getCommand("joinGame").setExecutor(new TTEnTCommandExcecutor());
-
+		getCommand("acceptInvite").setExecutor(new TTEnTCommandExcecutor());
+		
 		getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 			@Override
 			public void run() {
-				logic();
+				while(logic) {
+					logic();
+				}
 			}
-		}, 5L);
+		});
 	}
 	@Override
 	public void onDisable() {
-		// TODO Insert logic to be performed when the plugin is disabled
+		//Insert logic to be performed when the plugin is disabled
+		getServer().getPluginManager().disablePlugin(this);
+		logic = false;
 	}
 	public void logic() {
 		// TODO Add logic that needs to be run constantly
-		//		for(TTEnTGame game: activeGames) {
-		//			
-		//		}
+		
 	}
 	public void generateVillage(final Location location, final List<IngamePlayer> players) {
 		getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
@@ -87,10 +108,6 @@ public final class TTEnTMain extends org.bukkit.plugin.java.JavaPlugin {
 					e.printStackTrace();
 				}
 			}
-		}
-		, 10L);
-	}
-	public static void main(String[] args) {
-		new TTEnTMain();
+		}, 10L);
 	}
 }
