@@ -14,6 +14,8 @@ import org.bukkit.inventory.PlayerInventory;
 
 public class TTEnTGame {
 
+	public static int numGames = 0;
+	
 	public Location spawn, deathSpawn;
 
 	public List<IngamePlayer> players, deadPlayers;
@@ -22,9 +24,9 @@ public class TTEnTGame {
 
 	public HashMap<String, PlayerInventory> originalInventories = new HashMap<String, PlayerInventory>();
 
-	public TTEnTGame(double x, double y, double z) {
-		spawn = new Location(TTEnTMain.worlds.get(0), x, y, z);
-		deathSpawn = new Location(TTEnTMain.worlds.get(1), x, y, z);
+	public TTEnTGame() {
+		spawn = new Location(TTEnTMain.worlds.get(0), numGames * 500, 5, numGames * 500);
+		deathSpawn = new Location(TTEnTMain.worlds.get(1), numGames * 500, 5, numGames * 500);
 		players = new ArrayList<IngamePlayer>();
 	}
 	public void start() {
@@ -57,6 +59,7 @@ public class TTEnTGame {
 			}
 		}
 		//TODO Spawn village and villagers
+		new TTEnTMain().generateVillage(spawn, players);
 	}
 	public void end() {
 		for(IngamePlayer player: players) {

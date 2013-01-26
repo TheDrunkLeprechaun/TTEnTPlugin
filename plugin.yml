@@ -1,0 +1,40 @@
+name: Tactical Testificate Entrenchment
+main: com.github.TheDrunkLeprechaun.TacticalTestificateEntrenchment.TTEnTMain
+version: 1.0
+commands:
+	privateGame:
+		description: Creates a private game
+		usage: /privateGame <game name> <create, start, end, invitePlayer, kickPlayer> <player name, if inviting or kicking player>
+		permission: TTEnTMain.privateGame
+		permission-message: You cannot create a private game.
+	publicGame:
+		description: Creates a public game
+		usage: /publicGame <game name> <create, start, end, invitePlayer, kickPlayer> <player name, if inviting or kicking player>
+		permission: TTEnTMain.publicGame
+		permission-message: You cannot create a public game.
+	acceptInvite:
+		description: Accepts an invite and join the game
+		usage: /acceptInvite <name of sender>
+	joinGame:
+		description: Joins the game
+		usage: /joinGame <game name>
+		
+permissions:
+	privateGame.*:
+		description: Gives access to commands related to creating private games(i.e. games that can only be joined by invite)
+		children:
+			privateGame.create: op
+			privateGame.start: op
+			privateGame.end: op
+			privateGame.invitePlayer: op
+			privateGame.kickPlayer: op
+		default: op
+	publicGame.*:
+		description: Gives access to commands related to creating private games(i.e. games that can only be joined by invite)
+		children:
+			publicGame.create: op
+			publicGame.start: op
+			publicGame.end: op
+			publicGame.invitePlayer: op
+			publicGame.kickPlayer: op		
+		default: op

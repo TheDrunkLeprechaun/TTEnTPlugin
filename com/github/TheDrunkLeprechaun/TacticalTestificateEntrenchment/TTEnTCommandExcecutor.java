@@ -17,7 +17,7 @@ public class TTEnTCommandExcecutor implements CommandExecutor{
 			}
 			else if(args.length == 2) {
 				if(args[1].equalsIgnoreCase("create") && sender.hasPermission("privateGame.create")) {
-					TTEnTMain.privateGames.put(args[0], new TTEnTGame(0, 0, 0));
+					TTEnTMain.privateGames.put(args[0], new TTEnTGame());
 					return true;
 				}
 				else if(args[1].equalsIgnoreCase("start") && sender.hasPermission("privateGame.start")) {
@@ -51,7 +51,7 @@ public class TTEnTCommandExcecutor implements CommandExecutor{
 			}
 			else if(args.length == 2) {
 				if(args[1].equalsIgnoreCase("create") && sender.hasPermission("publicGame.create")) {
-					TTEnTMain.publicGames.put(args[0], new TTEnTGame(0, 0, 0));
+					TTEnTMain.publicGames.put(args[0], new TTEnTGame());
 					return true;
 				}
 				else if(args[1].equalsIgnoreCase("start") && sender.hasPermission("publicGame.start")) {
