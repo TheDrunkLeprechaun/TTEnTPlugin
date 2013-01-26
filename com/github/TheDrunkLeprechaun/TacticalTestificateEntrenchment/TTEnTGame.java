@@ -13,15 +13,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class TTEnTGame {
-	
+
 	public Location spawn, deathSpawn;
-	
+
 	public List<IngamePlayer> players, deadPlayers;
-	
+
 	public HashMap<String, Location> originalLocations = new HashMap<String, Location>();
-	
+
 	public HashMap<String, PlayerInventory> originalInventories = new HashMap<String, PlayerInventory>();
-	
+
 	public TTEnTGame(double x, double y, double z) {
 		spawn = new Location(TTEnTMain.worlds.get(0), x, y, z);
 		deathSpawn = new Location(TTEnTMain.worlds.get(1), x, y, z);
@@ -51,7 +51,7 @@ public class TTEnTGame {
 				pInv.addItem(new ItemStack(Material.GRILLED_PORK, 8));
 				pInv.addItem(new ItemStack(Material.ENDER_PEARL, 4));
 				pInv.addItem(new ItemStack(Material.SKULL_ITEM, 1));
-				
+
 				p.setGameMode(GameMode.ADVENTURE);
 				p.teleport(spawn);
 			}

@@ -27,6 +27,7 @@ public class TTEnTListener implements Listener{
 			Player player = (Player) e.getEntity();
 			int i = 0;
 			for(TTEnTGame game: TTEnTMain.activeGames) {
+				int it = 0;
 				for(IngamePlayer p: game.players) {
 					if(p.rep == player.getName() && player.getHealth() - e.getDamage() <= 0) {
 						e.setCancelled(true);
@@ -34,9 +35,11 @@ public class TTEnTListener implements Listener{
 						player.getInventory().remove(new ItemStack(Material.SKULL_ITEM, 1));
 						TTEnTMain.worlds.get(0).dropItem(player.getLocation(), new ItemStack(Material.SKULL_ITEM, 1));
 						TTEnTMain.activeGames.get(i).deadPlayers.add(p);
+						TTEnTMain.activeGames.get(i).players.get(it).spawnHead = player.getLocation();
 						player.teleport(game.deathSpawn);
 						return;
 					}
+					it++;
 				}
 				i++;
 			}
@@ -44,7 +47,11 @@ public class TTEnTListener implements Listener{
 	}
 	public void playerPickUpItem(PlayerPickupItemEvent e) {
 		if(e.getItem().getItemStack().equals(new ItemStack(Material.SKULL_ITEM, 1))) {
-			
+			for(TTEnTGame game: TTEnTMain.activeGames) {
+				for(IngamePlayer p: game.players) {
+					e.getItem().getLocation().equals(p.spawnHead);
+				}
+			}
 		}
 	}
 }
